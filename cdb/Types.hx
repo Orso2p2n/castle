@@ -225,6 +225,10 @@ class IndexId<T,Kind> extends Index<T> {
 
 	override function initSheet(data:Data) {
 		super.initSheet(data);
+		if(sheet == null) {
+			return;
+		}
+
 		byId = new Map();
 		byIndex = [];
 		for( c in sheet.columns )
