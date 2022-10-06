@@ -138,6 +138,16 @@ class Main extends Model {
 		};
 		pages = new JqPages(this);
 
+		onLaunchOpen();
+	}
+
+	function onLaunchOpen() {
+		var gui = js.Lib.require("nw.gui");
+		var arg = gui.App.argv;
+		var filePath = haxe.io.Path.normalize('${Sys.getCwd()}/${arg}');
+		if (arg != null && arg != "" && sys.FileSystem.exists(filePath)) {
+			prefs.curFile = filePath;
+		}
 		load(true);
 	}
 
