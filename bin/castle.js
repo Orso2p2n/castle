@@ -3981,7 +3981,8 @@ var Main = function() {
 	});
 	this.cursor = { s : null, x : 0, y : 0};
 	this.pages = new JqPages(this);
-	this.onLaunchOpen();
+	this.initCurFilePath();
+	this.load(true);
 };
 $hxClasses["Main"] = Main;
 Main.__name__ = "Main";
@@ -4027,14 +4028,13 @@ Main.main = function() {
 };
 Main.__super__ = Model;
 Main.prototype = $extend(Model.prototype,{
-	onLaunchOpen: function() {
+	initCurFilePath: function() {
 		var gui = require("nw.gui");
 		var arg = gui.App.argv;
 		var filePath = haxe_io_Path.normalize("" + process.cwd() + "/" + arg);
 		if(arg != null && arg != "" && sys_FileSystem.exists(filePath)) {
 			this.prefs.curFile = filePath;
 		}
-		this.load(true);
 	}
 	,prepSnapshot: function(operationName) {
 		if(operationName == null) {
