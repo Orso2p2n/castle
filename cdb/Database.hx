@@ -342,6 +342,7 @@ class Database {
 			}
 			obj;
 		case TCustom(_), TTilePos, TTileLayer, TDynamic: null;
+		case TPoint: {x: 0, y: 0};
 		}
 	}
 
@@ -702,6 +703,8 @@ class Database {
 			return valueToString(val);
 		case TProperties, TList:
 			"???";
+		case TPoint:
+			"x: " + val.x + ", y: " + val.y;
 		}
 	}
 

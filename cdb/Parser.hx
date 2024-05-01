@@ -42,6 +42,7 @@ class Parser {
 				case TTileLayer	: "TileLayer";
 				case TDynamic	: "Dynamic";
 				case TProperties: "Properties";
+				case TPoint		: "Point";
 			}
 		}
 
@@ -50,9 +51,9 @@ class Parser {
 				baseName + ":" + Type.enumParameters(t)[0];
 			case TEnum(values), TFlags(values):
 				baseName + ":" + values.join(",");
-			case TId, TString, TList, TInt, TImage, TFloat, TBool, TColor, TFile, TTilePos, TTileLayer, TDynamic, TProperties:
+			case TId, TString, TList, TInt, TImage, TFloat, TBool, TColor, TFile, TTilePos, TTileLayer, TDynamic, TProperties, TPoint:
 				baseName;
-			};
+			}
 	}
 
 	public static function getType( str : String ) : Data.ColumnType {
@@ -82,6 +83,7 @@ class Parser {
 		case "15","TileLayer"	: TTileLayer;
 		case "16","Dynamic"		: TDynamic;
 		case "17","Properties"	: TProperties;
+		case "18","Point"		: TPoint;
 		default: throw "Unknown type " + str;
 		}
 	}

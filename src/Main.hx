@@ -925,6 +925,8 @@ class Main extends Model {
 			var str = Std.string(v).split("\n").join(" ").split("\t").join("");
 			if( str.length > 33 ) str = str.substr(0, 33) + "...";
 			str;
+		case TPoint:
+			"x: " + v.x + ", y: " + v.y;
 		}
 	}
 
@@ -1254,7 +1256,7 @@ class Main extends Model {
 		switch( column.type ) {
 
 		// ---- Begin "Edit Text Box Cell" Monstrosity ----
-		case TInt, TFloat, TString, TId, TCustom(_), TDynamic:
+		case TInt, TFloat, TString, TId, TCustom(_), TDynamic, TPoint:
 			v.empty();
 
 			var inputBox = J(column.type==TString?"<textarea>":"<input>");
@@ -1268,6 +1270,8 @@ class Main extends Model {
 					inputBox.val(base.typeValToString(base.getCustomType(t), val));
 				case TDynamic:
 					inputBox.val(haxe.Json.stringify(val));
+				case TPoint:
+					inputBox.val(val.x + "," + val.y);
 				default:
 					inputBox.val(""+val);
 				}
@@ -1323,6 +1327,9 @@ class Main extends Model {
 						try base.parseTypeVal(base.getCustomType(t), newValue) catch( e : Dynamic ) null;
 					case TDynamic:
 						try base.parseDynamic(newValue) catch( e : Dynamic ) null;
+					case TPoint:
+						var split = newValue.split(",");
+						{ x: Std.parseFloat(split[0]), y: Std.parseFloat(split[1]) };
 					default:
 						newValue;
 					}
@@ -2685,6 +2692,8 @@ class Main extends Model {
 			TDynamic;
 		case "properties":
 			TProperties;
+		case "point":
+			TPoint;
 		default:
 			return;
 		}
