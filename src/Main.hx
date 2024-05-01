@@ -2845,6 +2845,7 @@ class Main extends Model {
 		var mfile = new MenuItem({ label : "File" });
 		var mfiles = new Menu();
 		var mnew = new MenuItem( { label : "New", key : "N", modifiers : modifier } );
+		var mnewmono = new MenuItem( { label : "New Monofile", key : "N", modifiers : "shift+" + modifier } );
 		var mopen = new MenuItem( { label : "Open...", key : "O", modifiers : modifier } );
 		var mrecent = new MenuItem( { label : "Recent Files" } );
 		var msave = new MenuItem( { label : "Save", key : "S", modifiers : modifier } );
@@ -2860,6 +2861,11 @@ class Main extends Model {
 		var mexit = new MenuItem( { label : "Exit", key : "Q", modifiers : modifier } );
 
 		mnew.click = function() {
+			prefs.curFile = null;
+			load(true, true);
+		};
+
+		mnewmono.click = function() {
 			prefs.curFile = null;
 			load(true);
 		};
@@ -2951,7 +2957,7 @@ class Main extends Model {
 		mrecent.submenu = mrecents;
 
 		var msep = new MenuItem({type:separator});
-		for( m in [mnew, msep, mopen, mrecent, msep, msave, msaveas, msaveasmonofile, msep, mreload, msep, mclean, mcompress, mexport, msep, mexit] )
+		for( m in [mnew, mnewmono, msep, mopen, mrecent, msep, msave, msaveas, msaveasmonofile, msep, mreload, msep, mclean, mcompress, mexport, msep, mexit] )
 			mfiles.append(m);
 		mfile.submenu = mfiles;
 
@@ -3187,13 +3193,13 @@ class Main extends Model {
 		});
 	}
 
-	override function load(noError = false) {
+	override function load(noError = false, multifile = false) {
 		if( sys.FileSystem.exists(prefs.curFile+".mine") && !Resolver.resolveConflict(prefs.curFile) ) {
 			error("CDB file has unresolved conflict, merge by hand before reloading.");
 			return;
 		}
 
-		super.load(noError);
+		super.load(noError, multifile);
 
 		initContent();
 		prefs.recent.remove(prefs.curFile);

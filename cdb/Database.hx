@@ -32,12 +32,16 @@ class Database {
 
 	public var isMultifile(get, never) : Bool;
 
-	public function new() {
+	public function new(multifile = false) {
 		r_ident = ~/^[A-Za-z_][A-Za-z0-9_]*$/;
+
+		var format : String = multifile ? MultifileLoadSave.MULTIFILE_FORMAT : null;
+
 		data = {
 			sheets : [],
 			customTypes : [],
 			compress : false,
+			format : format
 		};
 		sheets = [];
 		sync();

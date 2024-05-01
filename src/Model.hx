@@ -139,11 +139,11 @@ class Model {
 		js.Browser.alert(msg + "\n\n" + Main.getCallstackString(2));
 	}
 
-	function load(noError = false) {
+	function load(noError = false, multifile = false) {
 		removeFileWatcher();
 
 		opStack = new OperationStack(cast(this, Main));
-		base = new cdb.Database();
+		base = new cdb.Database(multifile);
 		try {
 			base.loadFrom(prefs.curFile);
 			if( prefs.curSheet > base.sheets.length )
@@ -154,7 +154,7 @@ class Model {
 			if( !noError ) error(Std.string(e));
 			prefs.curFile = null;
 			prefs.curSheet = 0;
-			base = new cdb.Database();
+			base = new cdb.Database(multifile);
 		}
 		try {
 			var img = prefs.curFile.split(".");

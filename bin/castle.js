@@ -837,40 +837,6 @@ Lambda.concat = function(a,b) {
 	}
 	return l;
 };
-var haxe_IMap = function() { };
-$hxClasses["haxe.IMap"] = haxe_IMap;
-haxe_IMap.__name__ = "haxe.IMap";
-haxe_IMap.__isInterface__ = true;
-haxe_IMap.prototype = {
-	__class__: haxe_IMap
-};
-var haxe_ds_StringMap = function() {
-	this.h = Object.create(null);
-};
-$hxClasses["haxe.ds.StringMap"] = haxe_ds_StringMap;
-haxe_ds_StringMap.__name__ = "haxe.ds.StringMap";
-haxe_ds_StringMap.__interfaces__ = [haxe_IMap];
-haxe_ds_StringMap.stringify = function(h) {
-	var s = "[";
-	var first = true;
-	for (var key in h) {
-		if (first) first = false; else s += ',';
-		s += key + ' => ' + Std.string(h[key]);
-	}
-	return s + "]";
-};
-haxe_ds_StringMap.prototype = {
-	get: function(key) {
-		return this.h[key];
-	}
-	,keys: function() {
-		return new haxe_ds__$StringMap_StringMapKeyIterator(this.h);
-	}
-	,iterator: function() {
-		return new haxe_ds__$StringMap_StringMapValueIterator(this.h);
-	}
-	,__class__: haxe_ds_StringMap
-};
 var Level = function(model,sheet,index) {
 	this.reloading = false;
 	this.rotation = 0;
@@ -3848,14 +3814,17 @@ Model.prototype = {
 		var v = msg + "\n\n" + Main.getCallstackString(2);
 		window.alert(Std.string(v));
 	}
-	,load: function(noError) {
+	,load: function(noError,multifile) {
+		if(multifile == null) {
+			multifile = false;
+		}
 		if(noError == null) {
 			noError = false;
 		}
 		var _gthis = this;
 		this.removeFileWatcher();
 		this.opStack = new OperationStack(js_Boot.__cast(this , Main));
-		this.base = new cdb_Database();
+		this.base = new cdb_Database(multifile);
 		try {
 			this.base.loadFrom(this.prefs.curFile);
 			if(this.prefs.curSheet > this.base.sheets.length) {
@@ -3870,7 +3839,7 @@ Model.prototype = {
 			}
 			this.prefs.curFile = null;
 			this.prefs.curSheet = 0;
-			this.base = new cdb_Database();
+			this.base = new cdb_Database(multifile);
 		}
 		try {
 			var img = this.prefs.curFile.split(".");
@@ -7620,6 +7589,7 @@ Main.prototype = $extend(Model.prototype,{
 		var mfile = new js_node_webkit_MenuItem({ label : "File"});
 		var mfiles = new js_node_webkit_Menu();
 		var mnew = new js_node_webkit_MenuItem({ label : "New", key : "N", modifiers : modifier});
+		var mnewmono = new js_node_webkit_MenuItem({ label : "New Monofile", key : "N", modifiers : "shift+" + modifier});
 		var mopen = new js_node_webkit_MenuItem({ label : "Open...", key : "O", modifiers : modifier});
 		var mrecent = new js_node_webkit_MenuItem({ label : "Recent Files"});
 		var msave = new js_node_webkit_MenuItem({ label : "Save", key : "S", modifiers : modifier});
@@ -7634,6 +7604,10 @@ Main.prototype = $extend(Model.prototype,{
 		};
 		var mexit = new js_node_webkit_MenuItem({ label : "Exit", key : "Q", modifiers : modifier});
 		mnew.click = function() {
+			_gthis.prefs.curFile = null;
+			_gthis.load(true,true);
+		};
+		mnewmono.click = function() {
 			_gthis.prefs.curFile = null;
 			_gthis.load(true);
 		};
@@ -7728,6 +7702,8 @@ Main.prototype = $extend(Model.prototype,{
 		mrecent.submenu = mrecents;
 		var msep = new js_node_webkit_MenuItem({ type : "separator"});
 		var m = mnew;
+		mfiles.append(m);
+		var m = mnewmono;
 		mfiles.append(m);
 		var m = msep;
 		mfiles.append(m);
@@ -8035,7 +8011,10 @@ Main.prototype = $extend(Model.prototype,{
 			_gthis.prefs.windowPos.max = false;
 		});
 	}
-	,load: function(noError) {
+	,load: function(noError,multifile) {
+		if(multifile == null) {
+			multifile = false;
+		}
 		if(noError == null) {
 			noError = false;
 		}
@@ -8043,7 +8022,7 @@ Main.prototype = $extend(Model.prototype,{
 			this.error("CDB file has unresolved conflict, merge by hand before reloading.");
 			return;
 		}
-		Model.prototype.load.call(this,noError);
+		Model.prototype.load.call(this,noError,multifile);
 		this.initContent();
 		HxOverrides.remove(this.prefs.recent,this.prefs.curFile);
 		if(this.prefs.curFile != null) {
@@ -9036,9 +9015,13 @@ cdb_TileMode.ofString = function(s) {
 cdb_TileMode.toString = function(this1) {
 	return this1;
 };
-var cdb_Database = function() {
+var cdb_Database = function(multifile) {
+	if(multifile == null) {
+		multifile = false;
+	}
 	this.r_ident = new EReg("^[A-Za-z_][A-Za-z0-9_]*$","");
-	this.data = { sheets : [], customTypes : [], compress : false};
+	var format = multifile ? cdb_MultifileLoadSave.MULTIFILE_FORMAT : null;
+	this.data = { sheets : [], customTypes : [], compress : false, format : format};
 	this.sheets = [];
 	this.sync();
 };
@@ -11706,6 +11689,40 @@ cdb_Lz4Reader.prototype = {
 		return out.sub(0,outPos);
 	}
 	,__class__: cdb_Lz4Reader
+};
+var haxe_IMap = function() { };
+$hxClasses["haxe.IMap"] = haxe_IMap;
+haxe_IMap.__name__ = "haxe.IMap";
+haxe_IMap.__isInterface__ = true;
+haxe_IMap.prototype = {
+	__class__: haxe_IMap
+};
+var haxe_ds_StringMap = function() {
+	this.h = Object.create(null);
+};
+$hxClasses["haxe.ds.StringMap"] = haxe_ds_StringMap;
+haxe_ds_StringMap.__name__ = "haxe.ds.StringMap";
+haxe_ds_StringMap.__interfaces__ = [haxe_IMap];
+haxe_ds_StringMap.stringify = function(h) {
+	var s = "[";
+	var first = true;
+	for (var key in h) {
+		if (first) first = false; else s += ',';
+		s += key + ' => ' + Std.string(h[key]);
+	}
+	return s + "]";
+};
+haxe_ds_StringMap.prototype = {
+	get: function(key) {
+		return this.h[key];
+	}
+	,keys: function() {
+		return new haxe_ds__$StringMap_StringMapKeyIterator(this.h);
+	}
+	,iterator: function() {
+		return new haxe_ds__$StringMap_StringMapValueIterator(this.h);
+	}
+	,__class__: haxe_ds_StringMap
 };
 var cdb_MultifileLoadSave = function() { };
 $hxClasses["cdb.MultifileLoadSave"] = cdb_MultifileLoadSave;
