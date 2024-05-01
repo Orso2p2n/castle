@@ -11,3 +11,4 @@
 /bin/nwjs
 /bin/*.lnk
 tests
+node_modules
