@@ -11690,40 +11690,6 @@ cdb_Lz4Reader.prototype = {
 	}
 	,__class__: cdb_Lz4Reader
 };
-var haxe_IMap = function() { };
-$hxClasses["haxe.IMap"] = haxe_IMap;
-haxe_IMap.__name__ = "haxe.IMap";
-haxe_IMap.__isInterface__ = true;
-haxe_IMap.prototype = {
-	__class__: haxe_IMap
-};
-var haxe_ds_StringMap = function() {
-	this.h = Object.create(null);
-};
-$hxClasses["haxe.ds.StringMap"] = haxe_ds_StringMap;
-haxe_ds_StringMap.__name__ = "haxe.ds.StringMap";
-haxe_ds_StringMap.__interfaces__ = [haxe_IMap];
-haxe_ds_StringMap.stringify = function(h) {
-	var s = "[";
-	var first = true;
-	for (var key in h) {
-		if (first) first = false; else s += ',';
-		s += key + ' => ' + Std.string(h[key]);
-	}
-	return s + "]";
-};
-haxe_ds_StringMap.prototype = {
-	get: function(key) {
-		return this.h[key];
-	}
-	,keys: function() {
-		return new haxe_ds__$StringMap_StringMapKeyIterator(this.h);
-	}
-	,iterator: function() {
-		return new haxe_ds__$StringMap_StringMapValueIterator(this.h);
-	}
-	,__class__: haxe_ds_StringMap
-};
 var cdb_MultifileLoadSave = function() { };
 $hxClasses["cdb.MultifileLoadSave"] = cdb_MultifileLoadSave;
 cdb_MultifileLoadSave.__name__ = "cdb.MultifileLoadSave";
@@ -13856,6 +13822,13 @@ var haxe_CallStack = {};
 haxe_CallStack.callStack = function() {
 	return haxe_NativeStackTrace.toHaxe(haxe_NativeStackTrace.callStack());
 };
+var haxe_IMap = function() { };
+$hxClasses["haxe.IMap"] = haxe_IMap;
+haxe_IMap.__name__ = "haxe.IMap";
+haxe_IMap.__isInterface__ = true;
+haxe_IMap.prototype = {
+	__class__: haxe_IMap
+};
 var haxe_Exception = function(message,previous,native) {
 	Error.call(this,message);
 	this.message = message;
@@ -15487,6 +15460,33 @@ haxe_ds_ObjectMap.prototype = {
 		return new haxe_iterators_ArrayIterator(a);
 	}
 	,__class__: haxe_ds_ObjectMap
+};
+var haxe_ds_StringMap = function() {
+	this.h = Object.create(null);
+};
+$hxClasses["haxe.ds.StringMap"] = haxe_ds_StringMap;
+haxe_ds_StringMap.__name__ = "haxe.ds.StringMap";
+haxe_ds_StringMap.__interfaces__ = [haxe_IMap];
+haxe_ds_StringMap.stringify = function(h) {
+	var s = "[";
+	var first = true;
+	for (var key in h) {
+		if (first) first = false; else s += ',';
+		s += key + ' => ' + Std.string(h[key]);
+	}
+	return s + "]";
+};
+haxe_ds_StringMap.prototype = {
+	get: function(key) {
+		return this.h[key];
+	}
+	,keys: function() {
+		return new haxe_ds__$StringMap_StringMapKeyIterator(this.h);
+	}
+	,iterator: function() {
+		return new haxe_ds__$StringMap_StringMapValueIterator(this.h);
+	}
+	,__class__: haxe_ds_StringMap
 };
 var haxe_ds__$StringMap_StringMapKeyIterator = function(h) {
 	this.h = h;

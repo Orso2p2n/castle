@@ -20,23 +20,20 @@ It is based on [Motion Twin's `multifile` branch](https://github.com/motion-twin
 2. Unzip in any folder.
 3. Launch `cdb.exe`.
 
-### Compile from source
+### Run and Debug using VSCode
 
-#### Setup
-- Clone this repo.
-- Install [Haxe](https://haxe.org).
-- Run the command `haxelib install castle.hxml` at the root of the repository.
+1. Clone this repo.
+2. Install [Haxe](https://haxe.org).
+3. Run the command `haxelib install castle.hxml` at the root of the repository.
+4. Install the [Debugger for NWjs](https://marketplace.visualstudio.com/items?itemName=ruakr.vsc-nwjs) extension.
+5. Open the command palette (`Ctrl + Shift + P` by default) and run `NWjs Install`.
+6. Debug using the `Launch NWjs` configuration.
 
-#### Option 1: Run and Debug using VSCode
-- Install the [Debugger for NWjs](https://marketplace.visualstudio.com/items?itemName=ruakr.vsc-nwjs) extension.
-- Open the command palette (`Ctrl + Shift + P` by default) and run `NWjs Install`.
-- Debug using the `Launch NWjs` configuration.
+### Build EXE
 
-#### Option 2: Build via command prompt
-- Create the `bin/nwjs/` folder. 
-- [Download NWjs](http://nwjs.io) and copy the contents in the `bin/nwjs/` folder.
-- Build `castle.js` by running `haxe castle.hxml` at the root of the repository.
-- Launch `cdb.cmd`.
+At the root of the repository, run:
+- `cd bin`
+- `npm run dist`
 
 ### More info
 Original Website / documentation (might not be up to date): http://castledb.org

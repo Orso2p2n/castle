@@ -1,12 +1,31 @@
 {
-	"name" : "CastleDB-EE",
-	"window" : {
-		"title" : "CastleDB",
-		"icon" : "icon.png",
-		"width" : 800,
-		"height" : 600,
-		"show" : false,
-		"toolbar" : false
+	"name": "CDB-Multifile",
+	"version": "1.7.0",
+	"window": {
+		"title": "CastleDB",
+		"icon": "icon.png",
+		"width": 800,
+		"height": 600,
+		"show": false,
+		"toolbar": false
 	},
-	"main" : "index.html"
+	"main": "index.html",
+	"devDependencies": {
+		"nwjs-builder-phoenix": "^1.15.0"
+	},
+	"scripts": {
+		"dist": "build --tasks win-x86 --mirror https://dl.nwjs.io/ .",
+		"start": "run --x86 --mirror https://dl.nwjs.io/ ."
+	},
+	"build": {
+		"nwVersion": "0.87.0",
+		"output": "./../.dist/",
+		"packed": true,
+		"targets": [
+			"zip"
+		],
+		"win": {
+			"icon": "icon.ico"
+		}
+	}
 }

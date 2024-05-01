@@ -12,3 +12,4 @@
 /bin/*.lnk
 tests
 node_modules
+.dist
