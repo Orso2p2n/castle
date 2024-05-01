@@ -1,52 +1,42 @@
 CastleDB
 ========
-<a href="http://castledb.org"><img src="http://castledb.org/img/icon_hd.png" align=right /></a>
+<img src="./img/icon_hd.png" align=right>
 
 _A structured database and level editor with a local web app to edit it._
 
-### Why
+### What's CastleDB?
 CastleDB is used to input structured static data. Everything that is usually stored in XML or JSON files can be stored and modified with CastleDB instead. For instance, when you are making a game, you can have all of your items and monsters including their names, description, logic effects, etc. stored in CastleDB.
 
-###  How
-<img src="http://castledb.org/img/screen.png"  width=50% align=right  />
-CastleDB looks like any spreadsheet editor, except that each sheet has a data model. The model allows the editor to validate data and eases user input. For example, when a given column references another sheet row, you will be able to select it directly.
+### Why the fork?
+While the [original CastleDB repository](https://github.com/ncannasse/castle) is still maintained as a library, the editor is now legacy, as it has been merged with [HIDE](https://github.com/heapsio/hide).
 
+The goal of this fork is to provide a stable standalone version of the CastleDB editor.
 
-###  Storage
-CastleDB stores both its data model and the data contained in the rows into an easily readable JSON file. It can then easily be loaded and used by any program. It makes the handling of item and monster data that you are using in you video game much easier.
+It is based on [Motion Twin's `multifile` branch](https://github.com/motion-twin/castle/tree/multifile), which saves data in multiple files instead of only one, making collaborative work easier.
 
-###  Collaboration
-<img src="http://castledb.org/img/levelEdit.png" width=50% align=right />
-CastleDB allows efficient collaboration on data editing. It uses the JSON format with newlines to store its data, which in turn allows RCS such as GIT or SVN to diff/merge the data files. Unlike online spreadsheet editors, changes are made locally. This allows local experiments before either commiting or reverting.
+### Download and use
 
+1. Go to the **[Releases](https://github.com/Orso2p2n/castle-multifile/releases)** page and download the latest release.
+2. Unzip in any folder.
+3. Launch `cdb.exe`.
 
-### Download
+### Compile from source
 
-##### Windows x64
-http://castledb.org/file/castledb-1.5-win.zip
-##### OSX x64
-http://castledb.org/file/castledb-1.5-osx.zip
-##### NWJS Package
-http://castledb.org/file/package-1.5.zip  
-> To run the package, download http://nwjs.io and put package.nw into the nwjs directory
+#### Setup
+- Clone this repo.
+- Install [Haxe](https://haxe.org).
+- Run the command `haxelib install castle.hxml` at the root of the repository.
 
+#### Option 1: Run and Debug using VSCode
+- Install the [Debugger for NWjs](https://marketplace.visualstudio.com/items?itemName=ruakr.vsc-nwjs) extension.
+- Open the command palette (`Ctrl + Shift + P` by default) and run `NWjs Install`.
+- Debug using the `Launch NWjs` configuration.
 
-### Compile from sources:
-
-#### 1. Install Prerequisites
-- Install [Haxe](https://haxe.org) using approriate installer from https://haxe.org/download/
-- Install dependencies (https://github.com/HaxeFoundation/hxnodejs) using the command `haxelib install castle.hxml`
-
-#### 2. Build castle.js
-- Clone this repository
-- At the root of the repository folder run
-```haxe castle.hxml```
-- This will create `castle.js` file in the `bin` folder
-
-#### 3. Package or Run with NWJS
-- Download and copy NWJS from http://nwjs.io into the bin/nwjs directory
-- Run cdb.cmd on windows or nwjs/nwjs from bin directory on Linux
-- On OSX, you need to copy all bin files into bin/nwjs.app/Contents/Resources/app.nw folder, then open the NWJS application
+#### Option 2: Build via command prompt
+- Create the `bin/nwjs/` folder. 
+- [Download NWjs](http://nwjs.io) and copy the contents in the `bin/nwjs/` folder.
+- Build `castle.js` by running `haxe castle.hxml` at the root of the repository.
+- Launch `cdb.cmd`.
 
 ### More info
-Website / documentation: http://castledb.org
+Original Website / documentation (might not be up to date): http://castledb.org
