@@ -18,7 +18,7 @@ It is based on [Motion Twin's `multifile` branch](https://github.com/motion-twin
 
 1. Go to the **[Releases](https://github.com/Orso2p2n/castle-multifile/releases)** page and download the latest release.
 2. Unzip in any folder.
-3. Launch `cdb.exe`.
+3. Launch `cdb-multifile.exe`.
 
 ### Run and Debug using VSCode
 
