@@ -4,7 +4,7 @@
 		{
 			"type": "hxml",
 			"label": "Build",
-			"file": "castle.hxml",
+			"file": "castle-debug.hxml",
 			"group": {
 				"kind": "build",
 				"isDefault": true
